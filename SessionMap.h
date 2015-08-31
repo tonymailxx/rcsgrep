@@ -32,7 +32,6 @@ class SessionMap {
 
   public :
      void Clear();
-     //void Print();
      bool Compose(LLTParser &transaction);
      bool BuildSessionGroup();
 
