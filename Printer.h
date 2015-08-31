@@ -10,7 +10,9 @@
 
 class Printer {
   public :
-     static void Print(Condition &condition, SessionMap &smap);
+     static void PrintSessionMap(SessionMap &smap);
+     static void PrintSessionLog(Condition &condition, SessionMap &smap);
+     static void PrintSessionLog(__uint32_t choice, Condition &condition, SessionMap &smap);
 
   private :
      static bool MakeLog(Condition &condition, std::list<std::string> &chunk, AxString &output);

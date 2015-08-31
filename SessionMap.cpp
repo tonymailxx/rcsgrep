@@ -25,77 +25,77 @@ void SessionMap::Clear()
    m_SessionGroupMap    .clear();
 }
 
-void SessionMap::Print()
-{
-   static const char *FN = "[SessionMap::Print] ";
-
-   const char TAB[]        = "   ";
-   const char SECTIONTAG[] = "      ";
-   const char ELEMENTTAG[] = "         ";
-
-   // DEBUG start
-   {
-      {
-         DLOG(FN << TAB << "* IhSessionMap size:" << m_IhSessionMap.size());
-
-         std::map<int, IhSession>::iterator iter = m_IhSessionMap.begin();
-         for (; iter != m_IhSessionMap.end(); ++iter) {
-            DLOG(FN << TAB << TAB << "- ih-session-id:" << iter->first
-                  << " type:" << iter->second.m_type
-                  << " time:" << iter->second.m_time
-                  << " call-count:" << iter->second.m_CallIdSet.size());
-
-            // std::set<std::string>::iterator txit = iter->second.m_CallIdSet.begin();
-            // for (; txit != iter->second.m_CallIdSet.end(); ++txit) {
-            //    DLOG(FN << TAB << TAB << TAB << *txit);
-            // }
-         }
-      }
-
-      {
-         DLOG(FN << TAB << "* DialogMap size:" << m_DialogMap.size());
-
-         std::map<std::string, std::set<__uint32_t> >::iterator iter = m_DialogMap.begin();
-         for (; iter != m_DialogMap.end(); ++iter) {
-            DLOG(FN << TAB << TAB << "- H-TR:" << iter->first << " ih-count:" << iter->second.size());
-
-            // std::set<__uint32_t>::iterator ihit = iter->second.begin();
-            // for (; ihit != iter->second.end(); ++ihit) {
-            //    DLOG(FN << TAB << TAB << TAB << *ihit);
-            // }
-         }
-      }
-   }
-   // DEBUG end
-
-   STDOUT("================================================================================");
-   STDOUT("# Session list"                                                                  );
-   STDOUT("--------------------------------------------------------------------------------");
-   STDOUT(" ");
-
-   if (m_SessionGroupMap.empty()) {
-      STDOUT(SECTIONTAG << "empty!");
-
-   } else {
-      std::map<__uint32_t, SessionGroup>::iterator iter = m_SessionGroupMap.begin();
-      for (; iter != m_SessionGroupMap.end(); ++iter) {
-         STDOUT(SECTIONTAG << iter->first << ".");
-
-         std::set<__uint32_t>::iterator setit = iter->second.m_IhSessionSet.begin();
-         for (; setit != iter->second.m_IhSessionSet.end(); ++setit) {
-            std::map<int, IhSession>::iterator ihit = m_IhSessionMap.find(*setit);
-            if (ihit != m_IhSessionMap.end()) {
-               STDOUT(ELEMENTTAG << "- time:" << ihit->second.m_time << " ih-session-id:" << ihit->first << " type:" << ihit->second.m_type);
-            } else {
-               STDOUT(ELEMENTTAG << "- (invalid) ih-session-id:" << *setit);
-            }
-         }
-      }
-   }
-
-   STDOUT(" ");
-   STDOUT("--------------------------------------------------------------------------------");
-}
+//void SessionMap::Print()
+//{
+//   static const char *FN = "[SessionMap::Print] ";
+//
+//   const char TAB[]        = "   ";
+//   const char SECTIONTAG[] = "      ";
+//   const char ELEMENTTAG[] = "         ";
+//
+//   // DEBUG start
+//   {
+//      {
+//         DLOG(FN << TAB << "* IhSessionMap size:" << m_IhSessionMap.size());
+//
+//         std::map<int, IhSession>::iterator iter = m_IhSessionMap.begin();
+//         for (; iter != m_IhSessionMap.end(); ++iter) {
+//            DLOG(FN << TAB << TAB << "- ih-session-id:" << iter->first
+//                  << " type:" << iter->second.m_type
+//                  << " time:" << iter->second.m_time
+//                  << " call-count:" << iter->second.m_CallIdSet.size());
+//
+//            // std::set<std::string>::iterator txit = iter->second.m_CallIdSet.begin();
+//            // for (; txit != iter->second.m_CallIdSet.end(); ++txit) {
+//            //    DLOG(FN << TAB << TAB << TAB << *txit);
+//            // }
+//         }
+//      }
+//
+//      {
+//         DLOG(FN << TAB << "* DialogMap size:" << m_DialogMap.size());
+//
+//         std::map<std::string, std::set<__uint32_t> >::iterator iter = m_DialogMap.begin();
+//         for (; iter != m_DialogMap.end(); ++iter) {
+//            DLOG(FN << TAB << TAB << "- H-TR:" << iter->first << " ih-count:" << iter->second.size());
+//
+//            // std::set<__uint32_t>::iterator ihit = iter->second.begin();
+//            // for (; ihit != iter->second.end(); ++ihit) {
+//            //    DLOG(FN << TAB << TAB << TAB << *ihit);
+//            // }
+//         }
+//      }
+//   }
+//   // DEBUG end
+//
+//   STDOUT("================================================================================");
+//   STDOUT("# Session list"                                                                  );
+//   STDOUT("--------------------------------------------------------------------------------");
+//   STDOUT(" ");
+//
+//   if (m_SessionGroupMap.empty()) {
+//      STDOUT(SECTIONTAG << "empty!");
+//
+//   } else {
+//      std::map<__uint32_t, SessionGroup>::iterator iter = m_SessionGroupMap.begin();
+//      for (; iter != m_SessionGroupMap.end(); ++iter) {
+//         STDOUT(SECTIONTAG << iter->first << ".");
+//
+//         std::set<__uint32_t>::iterator setit = iter->second.m_IhSessionSet.begin();
+//         for (; setit != iter->second.m_IhSessionSet.end(); ++setit) {
+//            std::map<int, IhSession>::iterator ihit = m_IhSessionMap.find(*setit);
+//            if (ihit != m_IhSessionMap.end()) {
+//               STDOUT(ELEMENTTAG << "- time:" << ihit->second.m_time << " ih-session-id:" << ihit->first << " type:" << ihit->second.m_type);
+//            } else {
+//               STDOUT(ELEMENTTAG << "- (invalid) ih-session-id:" << *setit);
+//            }
+//         }
+//      }
+//   }
+//
+//   STDOUT(" ");
+//   STDOUT("--------------------------------------------------------------------------------");
+//}
  
 bool SessionMap::Compose(LLTParser &transaction)
 {

@@ -1,2 +1,6 @@
+v0.2.0
+- add --interactive option
+- add --width option
+
 v0.1.0
 - Session별 로그 수집 & 출력

@@ -17,6 +17,7 @@ SOURCES := \
 			  SessionMap.cpp \
 			  Fractionator.cpp \
 			  Printer.cpp \
+			  Mmi.cpp \
            main.cpp
 
 CLEAN_FILES += $(OBJS)

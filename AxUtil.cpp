@@ -4,6 +4,44 @@
 #include <strings.h>
 
 
+void axLTrim(char *pStr)
+{
+   char *tmp;
+   char *pLStr = pStr;
+
+   if (AX_ISZERO(pStr)) return;
+
+   for (tmp = pLStr; *tmp && *tmp <= ' '; ) tmp++;
+   if (tmp == pLStr) return;
+   for (*pLStr = *tmp; *pLStr; *pLStr = *tmp) {
+      pLStr++;
+      tmp++;
+   }
+}
+
+void axRTrim(char *pStr)
+{
+   char *tmp = NULL;
+   char *pLStr = pStr;
+
+   if (AX_ISZERO(pStr)) return;
+
+   for (; *pLStr; pLStr++) {
+      if (*pLStr > ' ') tmp = pLStr;
+   }
+
+   if (tmp) {
+      tmp++;
+      *tmp = '\0';
+   }
+}
+
+void axTrim(char *pStr)
+{
+   axRTrim(pStr);
+   axLTrim(pStr);
+}
+
 void axRTrimBlank(char *pStr, int len)
 {
    if (0 >= len) return;

@@ -6,9 +6,10 @@
 #include "LLTParser.h"
 #include "Fractionator.h"
 #include "Printer.h"
+#include "Mmi.h"
 
 #define USAGE 		"Usage: rcsgrep [OPTION]..."
-#define VERSION 	"rcsgrep 0.1.0"
+#define VERSION 	"rcsgrep 0.2.0"
 
 
 void Usage()
@@ -43,7 +44,7 @@ void Help()
    std::cout << ""                                                                                 << std::endl;
    std::cout << "Output control:"                                                                  << std::endl;
    std::cout << "       --color"                                                                   << std::endl;
-   std::cout << "       --unix-newline                         strip CR characters"                << std::endl;
+//   std::cout << "       --unix-newline                         strip CR characters"                << std::endl;
    std::cout << "       --width=\"width size\""                                                    << std::endl;
    std::cout << "       --write=\"log file\""                                                      << std::endl;
    std::cout << ""                                                                                 << std::endl;
@@ -101,34 +102,57 @@ int main(int argc, char **argv)
       }
 
       sessionmap.BuildSessionGroup();
-      sessionmap.Print();
    }
 
-   // interaction mode라면 user로 부터 선택된 session 에 대한 log 수집
-   SessionMap sessionlog;
-   sessionlog = sessionmap;
-
-   if (sessionlog.m_SessionGroupMap.empty()) {
+   if (sessionmap.m_SessionGroupMap.empty()) {
+      Printer::PrintSessionMap(sessionmap);
       return 0;
    }
+
 
    // Session Log 수집
    {
       std::set<std::string>::iterator iter = condition.m_inputFileTable.begin();
       for (; iter != condition.m_inputFileTable.end(); ++iter) {
 
-         if (false == Fractionator::ExtractLog(iter->c_str(), sessionlog))
+         if (false == Fractionator::ExtractLog(iter->c_str(), sessionmap))
             return 0;
       }
 
-      std::map<__uint32_t, SessionMap::SessionGroup>::iterator grit = sessionlog.m_SessionGroupMap.begin();
-      for (; grit != sessionlog.m_SessionGroupMap.end(); ++grit) {
+      std::map<__uint32_t, SessionMap::SessionGroup>::iterator grit = sessionmap.m_SessionGroupMap.begin();
+      for (; grit != sessionmap.m_SessionGroupMap.end(); ++grit) {
          DLOG("session-group:" << grit->first << " logs:" << grit->second.m_Logs.size());
       }
    }
 
-   // 수집 Log 출력
-   Printer::Print(condition, sessionlog);
+
+   //if ((condition.m_interactive) && (2 <= sessionmap.m_SessionGroupMap.size())) {
+   if ((condition.m_interactive) && (1 <= sessionmap.m_SessionGroupMap.size())) {
+
+      while (true) {
+         Printer::PrintSessionMap(sessionmap);
+
+         int choice = Mmi::Choose();
+         DLOG("choice : " << choice);
+
+         if (0 > choice) {
+            break;
+         }
+
+         if (0 == choice) {
+            continue;
+         }
+
+         // 수집 Log 출력
+         Printer::PrintSessionLog((__uint32_t) choice, condition, sessionmap);
+      }
+
+   } else {
+      Printer::PrintSessionMap(sessionmap);
+
+      // 수집 Log 출력
+      Printer::PrintSessionLog(condition, sessionmap);
+   }
 
    return 0;
 }

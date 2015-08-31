@@ -9,6 +9,10 @@
 template<class T>
 inline bool     AX_ISZERO(T s) { if (NULL == s) return true;  if (0 == *s) return true; return false;}
 
+void            axLTrim(char *pStr);              // ' '
+void            axRTrim(char *pStr);              // ' '
+void            axTrim(char *pStr);               // ' '
+
 void            axRTrimBlank(char *pStr, int len); // ' ', '\r', '\n', '\t'
 
 bool            axStrMatch(const char *src, const char *dst);
